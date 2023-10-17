@@ -13,15 +13,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build and push Docker image
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        docker build -t fe-dumbmerch .
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker tag fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest
-        docker push $DOCKER_USERNAME/fe-dumbmerch:latest
+- name: Build and Push Docker Image
+  env:
+    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  run: |
+    echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+    docker build -t fe-dumbmerch .
+    docker push fe-dumbmerch
 
   deploy:
     runs-on: ubuntu-latest
