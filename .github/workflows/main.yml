@@ -17,15 +17,21 @@ jobs:
       run: |
         echo "dckr_pat_HV4fQsWM3tZknlpEDB-k2kVIQe4" | docker login -u "zafarassidiq" --password-stdin
 
-    - name: Repository pull
+    - name: Repository Pull and Git Pull
       run: |
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "git pull"
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
 
     - name: Build and Push Docker Image
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
 
-    - name: Deploy to App Server
-      run: |
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/ && docker-compose -f docker-compose.yml up -d"
+    - name: SSH to App Server and Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: 103.175.216.224
+        username: appser
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/appser
+          docker-compose up -d
