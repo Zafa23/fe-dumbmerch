@@ -17,18 +17,15 @@ jobs:
       run: |
         echo "dckr_pat_HV4fQsWM3tZknlpEDB-k2kVIQe4" | docker login -u "zafarassidiq" --password-stdin
 
+    - name: Repository pull
+      run: |
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "git pull"
+
     - name: Build and Push Docker Image
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
 
-    - name: SSH to App Server
-      uses: appleboy/ssh-action@master
-      with:
-        host: 103.175.216.224
-        username: appser
-        key: |
-          ${{ secrets.APP_SERVER_SSH_KEY }}
-        script: |
-          # Di sini Anda bisa menambahkan perintah-perintah untuk menjalankan Docker container di server, misalnya:
-          docker-compose up -d
+    - name: Deploy to App Server
+      run: |
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/ && docker-compose -f docker-compose.yml up -d"
