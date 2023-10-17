@@ -20,7 +20,7 @@ jobs:
         docker tag fe-dumbmerch "$DOCKER_USERNAME/fe-dumbmerch:latest"
         docker push "$DOCKER_USERNAME/fe-dumbmerch:latest"
     env:
-      DOCKER_USERNAME: zafarassdiq
+      DOCKER_USERNAME: zafarAssdiq
       DOCKER_PASSWORD: Zafarassidiq
 
   deploy:
