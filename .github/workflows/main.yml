@@ -17,7 +17,7 @@ jobs:
       run: |
         echo "dckr_pat_HV4fQsWM3tZknlpEDB-k2kVIQe4" | docker login -u "zafarassidiq" --password-stdin
 
-    - name: Repository Pull and Git Pull
+    - name: Repository Pull
       run: |
         ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
 
