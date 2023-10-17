@@ -21,3 +21,4 @@ jobs:
       run: |
         docker build -t fe-dumbmerch .
         docker push fe-dumbmerch
+
