@@ -1,6 +1,6 @@
 FROM node:16-alpine as build
-WORKDIR /dumbmerch-fe
-COPY . /dumbmerch-fe
+WORKDIR /fe-dumbmerch
+COPY . /fe-dumbmerch
 RUN npm install
 
 FROM node:16-alpine
