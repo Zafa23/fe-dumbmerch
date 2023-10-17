@@ -1,5 +1,5 @@
 FROM node:16-alpine as build
-WORKDIR /fe-dumbmerch
+WORKDIR /dumbmerch-fe
 COPY . /fe-dumbmerch
 RUN npm install
 
