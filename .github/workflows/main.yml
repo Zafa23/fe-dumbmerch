@@ -15,12 +15,4 @@ jobs:
 
     - name: Login to Docker Hub
       run: |
-        echo ${{ secrets.DOCKER_PAT }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
-
-    - name: Build and Push Docker Image
-      run: |
-        docker build -t fe-dumbmerch .
-        docker push fe-dumbmerch
+        echo "dckr_pat_HV4fQsWM3tZknlpEDB-k2kVIQe4" | docker login -u "zafarassidiq" --password-stdin
