@@ -13,15 +13,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Docker Build Environment
+    - name: Build and push Docker image
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
         docker build -t fe-dumbmerch .
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker tag fe-dumbmerch "$DOCKER_USERNAME/fe-dumbmerch:latest"
-        docker push "$DOCKER_USERNAME/fe-dumbmerch:latest"
+        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker tag fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest
+        docker push $DOCKER_USERNAME/fe-dumbmerch:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -29,10 +29,10 @@ jobs:
 
     steps:
     - name: SSH into app server and run Docker container
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       run: |
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh -i ~/.ssh/id_rsa user@your-app-server "docker pull $DOCKER_USERNAME/fe-dumbmerch:latest && docker run -d --name fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest"
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -i ~/.ssh/id_rsa appser@103.175.216.224 "docker pull $DOCKER_USERNAME/fe-dumbmerch:latest && docker run -d --name fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest"
