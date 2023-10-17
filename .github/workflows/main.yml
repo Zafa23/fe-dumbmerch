@@ -1,19 +1,19 @@
-name: Pipa CI/CD
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
       - production
 
-pekerjaan:
+jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Periksa kode
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Buat Konfigurasi Docker
+    - name: Create Docker Configuration
       run: |
         echo "{ 
           \"auths\": { 
@@ -26,7 +26,7 @@ pekerjaan:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Bangun dan Unggah Gambar Docker
+    - name: Build and Push Docker Image
       run: |
         docker build -t fe-dumbmerch .
         docker push fe-dumbmerch
