@@ -16,3 +16,8 @@ jobs:
     - name: Login to Docker Hub
       run: |
         echo "dckr_pat_HV4fQsWM3tZknlpEDB-k2kVIQe4" | docker login -u "zafarassidiq" --password-stdin
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t fe-dumbmerch .
+        docker push fe-dumbmerch
