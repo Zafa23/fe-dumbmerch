@@ -21,3 +21,14 @@ jobs:
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
+
+    - name: SSH to App Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: 103.175.216.224
+        username: appser
+        key: |
+          ${{ secrets.APP_SERVER_SSH_KEY }}
+        script: |
+          # Di sini Anda bisa menambahkan perintah-perintah untuk menjalankan Docker container di server, misalnya:
+          docker-compose up -d
