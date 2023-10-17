@@ -23,7 +23,7 @@ jobs:
         docker tag fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest
         docker push $DOCKER_USERNAME/fe-dumbmerch:latest
 
-    deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
 
