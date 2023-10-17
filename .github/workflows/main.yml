@@ -23,7 +23,7 @@ jobs:
         docker tag your-docker-image-name $DOCKER_USERNAME/your-docker-image-name:latest
         docker push $DOCKER_USERNAME/your-docker-image-name:latest
 
-  deploy:
+    deploy:
     runs-on: ubuntu-latest
     needs: build
 
@@ -35,4 +35,4 @@ jobs:
         mkdir -p ~/.ssh
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh -i ~/.ssh/id_rsa user@your-app-server "docker pull $DOCKER_USERNAME/your-docker-image-name:latest && docker run -d --name your-app-container $DOCKER_USERNAME/your-docker-image-name:latest"
+        ssh -i ~/.ssh/id_rsa appser@103.175.216.224 "docker pull $DOCKER_USERNAME/fe-dumbmerch:latest && docker run -d --name fe-dumbmerch $DOCKER_USERNAME/fe-dumbmerch:latest"
