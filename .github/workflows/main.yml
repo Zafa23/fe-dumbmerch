@@ -21,18 +21,23 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: SSH Login and Git Pull
-      run: |
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i ${{ secrets.SSH_PRIVATE_KEY }} << EOF
-          cd /home/appser/fe-dumbmerch
-          git pull
-        EOF
+    - name: SSH Login
+      uses: appleboy/ssh-action@master
+      with:
+        host: 103.175.216.224
+        username: appser
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: 'echo "Logged in to SSH"'
+
+#    - name: Git Pull
+ #     run: |
+  #      cd /github/home/fe-dumbmerch
+   #     git pull
 
     - name: Build and Push Docker Image
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
-
     - name: SSH Deploy
       uses: appleboy/ssh-action@master
       with:
@@ -41,5 +46,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /home/appser/fe-dumbmerch
-          docker-compose up -d
+          docker compose up -d
 
