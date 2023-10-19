@@ -40,3 +40,4 @@ jobs:
         script: |
           cd /home/appser/fe-dumbmerch
           docker-compose up -d
+
