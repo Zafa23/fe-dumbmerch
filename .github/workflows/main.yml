@@ -19,29 +19,17 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: SSH Login
-      uses: appleboy/ssh-action@master
-      with:
-        host: 103.175.216.224
-        username: appser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: 'echo "Logged in to SSH"'
-
-    - name: Repository Pull
+    - name: Repository Pull and SSH Commands
       run: |
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
+        # SSH login
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i <(echo "${{ secrets.SSH_PRIVATE_KEY }}") "echo 'Logged in via SSH'"
 
-    - name: Build and Push Docker Image
-      run: |
+        # Git pull
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i <(echo "${{ secrets.SSH_PRIVATE_KEY }}") "cd /home/appser/fe-dumbmerch && git pull"
+
+        # Build and Push Docker Image
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
 
-    - name: SSH Deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: 103.175.216.224
-        username: appser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /home/appser/fe-dumbmerch
-          docker-compose up -d
+        # SSH Deploy
+        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i <(echo "${{ secrets.SSH_PRIVATE_KEY }}") "cd /home/appser/fe-dumbmerch && docker-compose up -d"
