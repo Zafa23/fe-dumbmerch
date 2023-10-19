@@ -27,9 +27,10 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: 'echo "Logged in to SSH"'
 
-    - name: Repository Pull
+    - name: Git Pull
       run: |
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
+        cd /home/appser/fe-dumbmerch
+        git pull
 
     - name: Build and Push Docker Image
       run: |
