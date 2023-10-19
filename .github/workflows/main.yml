@@ -27,10 +27,11 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: 'echo "Logged in to SSH"'
 
-    - name: Git Pull
-      run: |
-        cd /github/home/fe-dumbmerch
-        git pull
+#    - name: Git Pull
+ #     run: |
+  #      cd /github/home/fe-dumbmerch
+   #     git pull
+
     - name: Build and Push Docker Image
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
