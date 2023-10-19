@@ -19,16 +19,22 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: SSH Login
-      uses: appleboy/ssh-action@master
-      with:
-        host: 103.175.216.224
-        username: appser
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          echo "Logged in to SSH"
-          cd /github/home/fe-dumbmerch
-          git pull
+- name: SSH Login and Git Pull
+  uses: appleboy/ssh-action@master
+  with:
+    host: 103.175.216.224
+    username: appser
+    key: ${{ secrets.SSH_PRIVATE_KEY }}
+    script: |
+      echo "Logged in to SSH"
+      cd /home/appser/fe-dumbmerch
+      git pull
+  port: 22
+  timeout: 30s
+  command_timeout: 10m
+  proxy_port: 22
+  proxy_timeout: 30s
+
 
     - name: Build and Push Docker Image
       run: |
