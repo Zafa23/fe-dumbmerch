@@ -29,7 +29,7 @@ jobs:
 
     - name: Git Pull
       run: |
-        cd ~/fe-dumbmerch
+        cd /github/home/fe-dumbmerch
         git pull
 
     - name: Build and Push Docker Image
