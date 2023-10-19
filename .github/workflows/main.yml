@@ -22,12 +22,10 @@ jobs:
     - name: Repository Pull
       run: |
         ssh -o StrictHostKeyChecking=no appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
-
     - name: Build and Push Docker Image
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
-
     - name: SSH to App Server and Deploy
       uses: appleboy/ssh-action@master
       with:
@@ -35,5 +33,5 @@ jobs:
         username: appser
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/appser
+          cd /home/appser/fe-dumbmerch
           docker-compose up -d
