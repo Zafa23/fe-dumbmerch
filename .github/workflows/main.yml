@@ -19,17 +19,26 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Create SSH Key File
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
+        chmod 600 id_rsa
+      shell: bash
+
     - name: SSH and Git Pull
       run: |
         # SSH login and Git pull
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i - <<<$SSH_PRIVATE_KEY "cd /home/appser/fe-dumbmerch && git pull"
+        ssh -o StrictHostKeyChecking=no -i id_rsa appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && git pull"
+      shell: bash
 
     - name: Build and Push Docker Image
       run: |
         docker build -t ***/fe-dumbmerch .
         docker push ***/fe-dumbmerch
+      shell: bash
 
     - name: SSH Deploy
       run: |
         # SSH login and Docker Compose
-        ssh -o StrictHostKeyChecking=no appser@103.175.216.224 -i - <<<$SSH_PRIVATE_KEY "cd /home/appser/fe-dumbmerch && docker-compose up -d"
+        ssh -o StrictHostKeyChecking=no -i id_rsa appser@103.175.216.224 "cd /home/appser/fe-dumbmerch && docker-compose up -d"
+      shell: bash
