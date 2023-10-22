@@ -33,6 +33,7 @@ jobs:
       run: |
         docker build -t zafarassidiq/fe-dumbmerch .
         docker push zafarassidiq/fe-dumbmerch
+        
     - name: SSH Deploy
       uses: appleboy/ssh-action@master
       with:
