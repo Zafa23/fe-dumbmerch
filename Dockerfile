@@ -1,12 +1,12 @@
-# Tahap pertama (build)
-FROM node:16-alpine as build
-WORKDIR /dumbmerch-fe
-COPY . /dumbmerch-fe
+FROM node:16-alpine AS staging
+WORKDIR /usr/src/app
+COPY . .
 RUN yarn install
+RUN yarn build
 
-# Tahap kedua
-FROM node:16-alpine
-COPY --from=build /dumbmerch-fe /dumbmerch-fe
-WORKDIR /dumbmerch-fe
+FROM node:16-alpine AS production
+WORKDIR /home/root
+COPY --from=staging /usr/src/app/build /home/root/build
+RUN yarn global add serve
 EXPOSE 3000
-CMD ["yarn", "run", "start"]
+CMD ["yarn", "serve", "-s", "build", "-l", "3000"]
